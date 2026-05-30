@@ -23,40 +23,23 @@ Under the hood, cross-chain messaging and liquidity transfer are handled nativel
 
 ## Local Development Setup
 
-To run the full end-to-end system locally, we use Foundry's `anvil` to fork both Base and Arbitrum mainnets.
+We have automated the entire environment setup! The system uses Foundry's `anvil` to create zero-cost local forks of the Base and Arbitrum mainnets, allowing you to test cross-chain execution without spending real money.
 
 ### 1. Prerequisites
 - Node.js (v18+)
 - Foundry (`forge`, `cast`, `anvil`)
 - MetaMask installed in your browser
 
-### 2. Start Local Blockchain Forks
-Open two separate terminals to run the Base and Arbitrum forks:
+### 2. Automated Blockchain Bootstrap
+Run the setup script from the root directory. This will start both blockchain forks in the background, deploy the smart contracts, configure your `.env` variables, and mint you 1,000,000 fake USDC for testing!
 
 ```bash
-# Terminal 1: Base Fork (Source)
-anvil --fork-url https://mainnet.base.org --port 8544 --chain-id 84530
-
-# Terminal 2: Arbitrum Fork (Destination)
-anvil --fork-url https://arb1.arbitrum.io/rpc --port 8546 --chain-id 421610
+chmod +x scripts/setup-local.sh
+./scripts/setup-local.sh
 ```
 
-### 3. Deploy Smart Contracts
-Navigate to the `contracts` directory:
-```bash
-cd contracts
-forge install
-
-# Deploy BaseReceiver to Base (Port 8544)
-forge create --broadcast --rpc-url http://localhost:8544 --private-key <SOLVER_PRIVATE_KEY> src/BaseReceiver.sol:BaseReceiver --constructor-args <SOLVER_ADDRESS>
-
-# Deploy ArbExecutor to Arbitrum (Port 8546)
-forge create --broadcast --rpc-url http://localhost:8546 --private-key <SOLVER_PRIVATE_KEY> src/ArbExecutor.sol:ArbExecutor --constructor-args <SOLVER_ADDRESS>
-```
-*Note: Update the addresses in your `.env` files with the deployed contract addresses.*
-
-### 4. Start the Off-chain Solver
-Navigate to the `solver` directory:
+### 3. Start the Off-chain Solver API
+Open a new terminal and navigate to the `solver` directory:
 ```bash
 cd solver
 npm install
@@ -64,11 +47,13 @@ npm start
 ```
 The solver API will start on `http://localhost:4000`.
 
-### 5. Start the Frontend
-Navigate to the `frontend` directory:
+### 4. Start the React UI
+Open another terminal and navigate to the `frontend` directory:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Open `http://localhost:3000` in your browser. Connect MetaMask to the `Local Base Fork` network (`http://localhost:8544`, Chain ID: `84530`), sign the intent, and watch the relay execute!
+Open `http://localhost:5173` (or the port Vite provides) in your browser. 
+
+Connect MetaMask, it will automatically prompt you to add the **Local Base Fork**. Sign your intent, and watch the relay execute in real-time!

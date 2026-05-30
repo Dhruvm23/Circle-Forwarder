@@ -24,7 +24,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 dotenv.config();
-const BASE_RPC_URL: string = process.env.BASE_RPC_URL || "http://localhost:8544";
+const BASE_RPC_URL: string = process.env.BASE_RPC_URL || "http://localhost:8545";
 const ARB_RPC_URL: string = process.env.ARB_RPC_URL || "http://localhost:8546";
 const SOLVER_PRIVATE_KEY: string | undefined = process.env.SOLVER_PRIVATE_KEY;
 const BASE_RECEIVER_ADDRESS: string | undefined = process.env.BASE_RECEIVER_ADDRESS;

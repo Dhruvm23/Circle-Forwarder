@@ -1,0 +1,43 @@
+name: Forge Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  FOUNDRY_PROFILE: default
+  BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
+  ARB_RPC_URL: ${{ secrets.ARB_RPC_URL }}
+
+jobs:
+  forge-test:
+    name: Compile & Test Smart Contracts
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./contracts
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Install dependencies
+        run: forge install OpenZeppelin/openzeppelin-contracts --no-commit
+
+      - name: Check formatting
+        run: forge fmt --check
+
+      - name: Build contracts
+        run: forge build --sizes
+
+      - name: Run test suite
+        run: forge test -vvv
