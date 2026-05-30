@@ -2,6 +2,10 @@
 
 Circle Forwarder is an intent-based relay architecture that abstracts away blockchain bridges and gas fees. It allows users to execute complex cross-chain operations (like supplying USDC to Aave on Arbitrum from their wallet on Base) with a single click and zero gas fees.
 
+## 🎥 Live Demo (End-to-End Execution)
+
+https://github.com/user-attachments/assets/98eae47c-8e94-4e2e-b97c-53d8c880b5b2
+
 ## Overview
 
 The system utilizes an **Intent-Based Architecture**. Instead of submitting standard transactions, users sign **EIP-712 Typed Data** intents. An off-chain solver captures these intents, pays the gas fees on the source chain, and fulfills the operation on the destination chain.
