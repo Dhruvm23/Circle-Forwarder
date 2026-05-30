@@ -180,7 +180,7 @@ export default function App() {
               chainId: localChainIdHex,
               chainName: "Local Base Fork (Anvil)",
               nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
-              rpcUrls: ["http://localhost:8544"],
+              rpcUrls: ["http://localhost:8545"],
             }],
           });
           addLog("SUCCESS", "Local Base fork added to MetaMask");
@@ -233,6 +233,25 @@ export default function App() {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const parsedAmount = ethers.parseUnits(intent.amount, 6);
+
+      // Check and request USDC allowance
+      const usdcAddress = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"; // Base USDC
+      const usdcAbi = [
+        "function allowance(address owner, address spender) view returns (uint256)",
+        "function approve(address spender, uint256 amount) returns (bool)"
+      ];
+      const usdcContract = new ethers.Contract(usdcAddress, usdcAbi, signer);
+      
+      addLog("INFO", "Checking USDC allowance...");
+      const allowance = await usdcContract.allowance(wallet.address, BASE_RECEIVER_ADDRESS);
+      
+      if (allowance < parsedAmount) {
+        addLog("INFO", "Requesting USDC approval from wallet...");
+        const tx = await usdcContract.approve(BASE_RECEIVER_ADDRESS, ethers.MaxUint256);
+        addLog("INFO", `Waiting for approval confirmation...`);
+        await tx.wait();
+        addLog("SUCCESS", "USDC approved for BaseReceiver contract");
+      }
       const intentValue = {
         user: wallet.address,
         amount: parsedAmount.toString(),
