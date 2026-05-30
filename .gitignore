@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════════
+#  Circle Forwarder — .gitignore
+# ═══════════════════════════════════════════════════════════════
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+out/
+cache/
+dist/
+build/
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/lib/
+
+# Environment (NEVER commit private keys)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend build
+frontend/dist/
+frontend/node_modules/
+
+# Solver build
+solver/dist/
+solver/node_modules/
+
+# Test artifacts
+lcov.info
+coverage/
+contracts/broadcast/

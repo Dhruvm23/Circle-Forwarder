@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   CIRCLE FORWARDER — Academic Interface Control Panel
+   Anti-Vibe-Coded Design System
+   
+   Design principles:
+   - Data-dense, transparent, monospace-first
+   - Deep navy backgrounds with slate border variations
+   - No gradients, no glassmorphism, no rounded corners
+   - Terminal/Bloomberg aesthetic — institutional precision
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas,
+      monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: #0f172a;
+    color: #94a3b8;
+    min-height: 100vh;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: rgba(59, 130, 246, 0.4);
+    color: #ffffff;
+  }
+
+  /* Custom scrollbar — minimal, dark */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #334155 #0f172a;
+  }
+}
+
+@layer components {
+  /* ─── Panel System ─── */
+  .panel {
+    @apply bg-[#1e293b] border border-[#334155] p-4;
+  }
+
+  .panel-header {
+    @apply text-[#e2e8f0] text-[10px] uppercase tracking-[0.2em] font-semibold mb-3 pb-2 border-b border-[#334155];
+  }
+
+  /* ─── Status Indicators ─── */
+  .status-dot {
+    @apply inline-block w-2 h-2 rounded-full flex-shrink-0;
+  }
+
+  .status-dot--active {
+    @apply bg-[#22c55e];
+    box-shadow: 0 0 6px rgba(34, 197, 94, 0.5);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .status-dot--pending {
+    @apply bg-[#f59e0b];
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+    animation: pulse-glow 1.5s ease-in-out infinite;
+  }
+
+  .status-dot--idle {
+    @apply bg-[#475569];
+  }
+
+  .status-dot--error {
+    @apply bg-[#ef4444];
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+  }
+
+  /* ─── Input System ─── */
+  .input-field {
+    @apply bg-[#0f172a] border border-[#334155] text-[#e2e8f0] px-3 py-2 text-xs font-mono
+           focus:outline-none focus:border-[#3b82f6] transition-colors duration-150 w-full;
+  }
+
+  .input-field::placeholder {
+    @apply text-[#475569];
+  }
+
+  /* ─── Button System ─── */
+  .btn-primary {
+    @apply bg-[#3b82f6] text-white px-4 py-2.5 text-[10px] uppercase tracking-[0.2em] font-bold
+           hover:bg-[#2563eb] active:bg-[#1d4ed8] transition-all duration-150
+           disabled:bg-[#334155] disabled:text-[#64748b] disabled:cursor-not-allowed
+           border border-transparent hover:border-[#60a5fa];
+  }
+
+  .btn-primary:not(:disabled):hover {
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+  }
+
+  /* ─── Typography ─── */
+  .data-label {
+    @apply text-[#64748b] text-[10px] uppercase tracking-[0.15em] font-medium;
+  }
+
+  .data-value {
+    @apply text-[#e2e8f0] text-xs font-medium;
+  }
+
+  .console-line {
+    @apply text-[11px] leading-5 font-mono;
+  }
+
+  /* ─── Stage Cards ─── */
+  .stage-card {
+    @apply p-3 border border-[#334155] transition-all duration-300;
+  }
+
+  .stage-card--active {
+    @apply border-[#22c55e]/40;
+    background: linear-gradient(
+      180deg,
+      rgba(34, 197, 94, 0.04) 0%,
+      rgba(34, 197, 94, 0.01) 100%
+    );
+  }
+
+  .stage-card--pending {
+    @apply border-[#f59e0b]/40;
+    background: linear-gradient(
+      180deg,
+      rgba(245, 158, 11, 0.04) 0%,
+      rgba(245, 158, 11, 0.01) 100%
+    );
+  }
+}
+
+/* ─── Animations ─── */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ─── Utility: Console Cursor ─── */
+.console-cursor::after {
+  content: "▊";
+  color: #3b82f6;
+  animation: cursor-blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+/* ─── Background Grid Pattern ─── */
+.bg-grid {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(51, 65, 85, 0.3) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
